@@ -2,13 +2,13 @@
 import { onMounted, reactive, ref } from 'vue';
 import { CourseCategoryComposible } from './composible/index';
 import { message } from 'ant-design-vue';
-import type { IFormStateCategory } from "../interface/category.interface";
+import type { IFormStateCategory } from "../course-category/interface/category.interface.ts";
 import type { ICategoryEntiry } from "../course-category/entiy/category.entity.ts";
 import type { IData } from "../course-category/interface/data.interface.ts";
 
 
 const { fetchAll, adminDeleteCourseCategory, adminUpdateCourseCategory, adminCreateCourseCategory } = CourseCategoryComposible();
-const deleting = ref(false);
+// const deleting = ref(false);
 
 const open = ref(false);
 const openCreate = ref(false);
@@ -19,6 +19,7 @@ const formState = reactive<IFormStateCategory>({
 });
 
 const createFormState = reactive<IFormStateCategory>({
+    id: 0, 
     name: ''
 });
 

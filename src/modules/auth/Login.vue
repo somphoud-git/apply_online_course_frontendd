@@ -44,14 +44,14 @@
         </a-button>
     </a-form-item>
 
-    <p v-if="error" style="color: red">{{ error }}</p>
+    <p v-if="Error" style="color: red">{{ Error }}</p>
   </a-form>
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
-import axios from 'axios';
+// import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useAuth } from './composible/auth.ts'
 

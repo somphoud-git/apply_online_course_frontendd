@@ -23,11 +23,8 @@
   import { ref, h } from "vue";
   import { Modal } from 'ant-design-vue';
   import {
-    ShoppingCartOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
-    CommentOutlined,
-    LogoutOutlined,
     ExclamationCircleFilled,
   } from "@ant-design/icons-vue";
 

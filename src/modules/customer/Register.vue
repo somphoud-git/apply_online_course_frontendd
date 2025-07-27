@@ -115,7 +115,7 @@ const onFinishFailed = (errorInfo: any) => {
         </a-button>
     </a-form-item>
 
-    <p v-if="error" style="color: red">{{ error }}</p>
+    <p v-if="Error" style="color: red">{{ Error }}</p>
   </a-form>
 </template>
 

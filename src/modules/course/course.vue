@@ -4,6 +4,8 @@ import { message } from 'ant-design-vue'
 import { useCourse } from '../course/composible/index'
 import type { ICourseEntity } from '../course/entity/course.entity'
 import dayjs from 'dayjs'
+import apiClient from '../../common/configuration/axios.config'
+
 const {
   fetchItems: fetchItemsFromComposable,
   getAllTeachers,
@@ -11,7 +13,7 @@ const {
   createNewCourse,
   updateStatusChange,
   deleteCourse,
-  useCourseStore,
+  // useCourseStore,
 } = useCourse()
 
 // ——— Reactive State ———
@@ -26,7 +28,7 @@ const formState = reactive({
   teacher_id: null as number | null,
   category_id: null as number | null,
   title: '',
-  max_students: null as number | null,
+  max_student: null as number | null,
   duration_hours: null as number | null,
   price: null as number | null,
   registration_start_date: null as string | null,
@@ -86,7 +88,7 @@ function openModalAdd() {
     teacher_id: null,
     category_id: null,
     title: '',
-    max_students: null,
+    max_student: null,
     duration_hours: null,
     price: null,
     registration_start_date: null,
@@ -101,10 +103,10 @@ function openModalAdd() {
 //formstate edit
 const formStateEdit = reactive({
         id: 0,
-        teacher_id: '',
-        category_id: '',
+        teacher_id: 0,
+        category_id: 0,
         title: '',
-        max_students: 0,
+        max_student: 0,
         duration_hours: 0,
         price: 0,
         registration_start_date: '',
@@ -119,10 +121,12 @@ const isOpenModalEdit = ref(false)
 const openEditModal = (record: ICourseEntity) => {
   console.log('object', record.registration_start_date ? dayjs(record.registration_start_date).format('YYYY-MM-DD') : '');
         formStateEdit.id = record.id;
-        formStateEdit.teacher_id = record.teacher_id;
-        formStateEdit.category_id = record.category_id;
+        // formStateEdit.teacher_id = record.teacher_id;
+        formStateEdit.teacher_id  = record.teacher.id
+        formStateEdit.category_id = record.category.id
+        // formStateEdit.category_id = record.category_id;
         formStateEdit.title = record.title;
-        formStateEdit.max_students = record.max_student;
+        formStateEdit.max_student = record.max_student;
         formStateEdit.duration_hours = record.duration_hours;
         formStateEdit.price = record.price;
         formStateEdit.registration_start_date = record.registration_start_date ? dayjs(record.registration_start_date).format('YYYY-MM-DD') : '';
@@ -141,7 +145,7 @@ const openEditModal = (record: ICourseEntity) => {
         try {
             await updateCourse(formStateEdit);
             isOpenModalEdit.value = false;
-            await fetchAll();
+            await loadCourses();
         } catch (error) {
             console.error('Error updating course:', error);
         }
@@ -158,7 +162,7 @@ const openEditModal = (record: ICourseEntity) => {
           title: courseData.title,
           description: courseData.description,
           duration_hours: Number(courseData.duration_hours),
-          max_student: Number(courseData.max_students),
+          max_student: Number(courseData.max_student),
           price: Number(courseData.price),
           end_date: courseData.end_date
             ? new Date(courseData.end_date).toISOString()
@@ -207,17 +211,7 @@ async function handleSubmit() {
     message.error(err.response?.data?.message || 'Failed to create course')
   }
 }
-async function handleEditSubmit() {
-  try {
-    await updateCourse(formState as ICourseEntity)
-    message.success('Course updated successfully')
-    isOpenModalEdit.value = false
-    await loadCourses()
-  } catch (err: any) {
-    console.error('Error updating course:', err)
-    message.error(err.response?.data?.message || 'Failed to update course')
-  }
-}
+
 // ——— Table Columns ———
 const columns = [
   { 
@@ -234,9 +228,9 @@ const columns = [
   { title: 'ຫົວຂໍ້', dataIndex: 'title', key: 'title' },
   {
     title: 'ຈຳນວນນັກສຶກສາ',
-    dataIndex: 'max_students',
-    key: 'max_students',
-    customRender: ({ record }: { record: ICourseEntity }) => `${record.max_students ?? 0} ຄົນ`,
+    dataIndex: 'max_student',
+    key: 'max_student',
+    customRender: ({ record }: { record: ICourseEntity }) => `${record.max_student ?? 0} ຄົນ`,
   },
   {
     title: 'ຊົ່ວໂມງຮຽນ',
@@ -270,11 +264,7 @@ const columns = [
   { title: 'Action', key: 'action' },
 ]
 
-//test testfunction
-const openTestModal = (value) => {
-  console.log('testsomphoud', value)
 
-}
 </script>
 
 <template>
@@ -295,7 +285,7 @@ const openTestModal = (value) => {
           <span class="flex items-center gap-2">
             <a-switch
               :checked="record.status === 'open'"
-              @change="(checked) => handleStatusChange(record, checked)"
+              @change="(checked:any) => handleStatusChange(record, checked)"
               :checked-children="'ເປີດ'"
               :un-checked-children="'ປິດ'"
             />
@@ -311,8 +301,6 @@ const openTestModal = (value) => {
             >
               <a style="color: red;">Delete</a>
             </a-popconfirm>
-            <a-divider type="vertical" />
-            <a @click="openTestModal(record)">TestDer</a>
           </span>
         </template>
       </template>
@@ -357,7 +345,7 @@ const openTestModal = (value) => {
 
       <div class="select-container">
         <label for="max-students-input">ຈຳນວນນັກສຶກສາ</label>
-        <a-input-number id="max-students-input" v-model:value="formState.max_students" style="width: 100%" />
+        <a-input-number id="max-students-input" v-model:value="formState.max_student" style="width: 100%" />
       </div>
 
       <div class="select-container">
@@ -429,7 +417,7 @@ const openTestModal = (value) => {
 
       <div class="select-container">
         <label for="max-students-input">ຈຳນວນນັກສຶກສາ</label>
-        <a-input-number id="max-students-input" v-model:value="formStateEdit.max_students" style="width: 100%" />
+        <a-input-number id="max-students-input" v-model:value="formStateEdit.max_student" style="width: 100%" />
       </div>
 
       <div class="select-container">

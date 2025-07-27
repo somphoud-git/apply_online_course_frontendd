@@ -206,7 +206,6 @@ const showModalEdit = (value: any) => {
 }
 
 /** Delete */
-const deleting = ref(false);
 const onDelete = async (id: number) => {
   try {
     await adminDeleteCustomer(id)
