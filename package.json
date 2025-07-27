@@ -1,27 +1,28 @@
 {
-  "name": "apply_course_online",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1",
-    "ant-design-vue": "~4.2.6",
-    "axios": "^1.10.0",
-    "dayjs": "^1.11.13",
-    "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.0",
-    "@vue/tsconfig": "^0.7.0",
-    "sass-embedded": "^1.89.2",
-    "typescript": "~5.8.3",
-    "vite": "^7.0.0",
-    "vue-tsc": "^2.2.10"
-  }
+    "name": "apply_course_online",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc -b && vite build",
+        "preview": "vite preview",
+        "start": "serve -s dist -l $PORT"
+    },
+    "dependencies": {
+        "@ant-design/icons-vue": "^7.0.1",
+        "ant-design-vue": "~4.2.6",
+        "axios": "^1.10.0",
+        "dayjs": "^1.11.13",
+        "vue": "^3.5.17",
+        "vue-router": "^4.5.1"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^6.0.0",
+        "@vue/tsconfig": "^0.7.0",
+        "sass-embedded": "^1.89.2",
+        "typescript": "~5.8.3",
+        "vite": "^7.0.0",
+        "vue-tsc": "^2.2.10"
+    }
 }
