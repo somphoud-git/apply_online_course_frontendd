@@ -7,13 +7,13 @@
           <user-outlined />
           <span>Customer</span>
         </a-menu-item>
-        <a-menu-item key="2">
+        <a-menu-item key="2" @click="handleMenuClick('CourseCategory')">
           <video-camera-outlined />
-          <span>Banner</span>
+          <span>Course Categories</span>
         </a-menu-item>
-        <a-menu-item key="3">
+        <a-menu-item key="3" @click="handleMenuClick('Course')">
           <upload-outlined />
-          <span>Supplier</span>
+          <span>Course</span>
         </a-menu-item>
         <a-sub-menu key="sub2">
           <template #title>

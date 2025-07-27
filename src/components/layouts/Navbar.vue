@@ -14,39 +14,55 @@
       />
   
       <div class="header-action-container">
-        <a-badge count="2">
-          <a-avatar shape="square" size="large" class="navbar-btn">
-            <shopping-cart-outlined class="menu-icon" />
-          </a-avatar>
-        </a-badge>
-        <a-badge count="3">
-          <a-avatar shape="square" size="large" class="navbar-btn">
-            <comment-outlined class="menu-icon" />
-          </a-avatar>
-        </a-badge>
-        <a-badge>
-          <a-avatar shape="square" size="large" class="navbar-btn">
-            <LogoutOutlined />
-          </a-avatar>
-        </a-badge>
+        <a-button @click="showConfirm" title="logout">Logout</a-button>
       </div>
     </a-layout-header>
   </template>
   
   <script lang="ts" setup>
-  import { ref } from "vue";
+  import { ref, h } from "vue";
+  import { Modal } from 'ant-design-vue';
   import {
     ShoppingCartOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     CommentOutlined,
     LogoutOutlined,
+    ExclamationCircleFilled,
   } from "@ant-design/icons-vue";
 
+  const { confirm } = Modal;
+
+  const handleOK = async () => {
+    try {
+      const token = localStorage.getItem('jwt');
+      await fetch('/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      localStorage.removeItem('jwt');
+      window.location.href = '/login'; // or your login route
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+  };
+
+  const showConfirm = () => {
+    confirm({
+      title: 'ເຈົ້າແນ່ໃຈບໍວ່າຕ້ອງການອອກຈາກລະບົບ?',
+      icon: h(ExclamationCircleFilled),
+      content: 'Are you sure you want to log out?',
+      onOk: handleOK,
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  };
+
   const collapsed = ref<boolean>(false);
-  
   const emit = defineEmits<{ (e: "toggleSidebar"): void }>();
-  
   const onCollapsed = () => {
     collapsed.value = !collapsed.value;
     emit("toggleSidebar");

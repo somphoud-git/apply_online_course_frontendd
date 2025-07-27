@@ -148,7 +148,7 @@ import dayjs from 'dayjs';
 import { useRegister } from './composible/register.ts';
 import type { FormInstance } from 'ant-design-vue';
 
-const { adminUpdateProfile } = useRegister();
+const { adminUpdateProfile, adminDeleteCustomer } = useRegister();
 
 const formRef = ref<FormInstance | null>(null);
 
@@ -206,9 +206,10 @@ const showModalEdit = (value: any) => {
 }
 
 /** Delete */
+const deleting = ref(false);
 const onDelete = async (id: number) => {
   try {
-    await apiClient.delete(`students/${id}`);
+    await adminDeleteCustomer(id)
     message.success('Customer deleted successfully');
     await fetchCustomers(data.pagination.current, data.pagination.pageSize);
   } catch (error) {
